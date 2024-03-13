@@ -62,6 +62,7 @@ When using the transport, the following options can be used to configure the tra
 * `serviceVersion`: version to be used by the OpenTelemetry logger
 * `messageKey`: The key of the log message to be used as the OpenTelemetry log entry Body. Optional, value `msg` used by default (like in Pino itself). Optional
 * `severityNumberMap`: Object mapping Pino log level numbers to OpenTelemetry log severity numbers. This is an override for adding custom log levels and changing default log levels. Undefined default Pino log levels will still be mapped to their default OpenTelemetry log severity. Optional
+* `customLevels`: If you are using custom log levels in your Pino config, you must pass them here as well for your log records to have defined SeverityText. Optional
 * `resourceAttributes`: Object containing [resource attributes](https://opentelemetry.io/docs/instrumentation/js/resources/). Optional
 * `logRecordProcessorOptions`: a single object or an array of objects specifying the LogProcessor and LogExporter types and constructor params. Optional
 

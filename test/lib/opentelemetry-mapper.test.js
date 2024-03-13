@@ -6,9 +6,9 @@ const { test } = require('tap')
 const { SeverityNumber } = require('@opentelemetry/api-logs')
 const pino = require('pino')
 
-test('default severity number map', async ({ match }) => {
+test('default severity number map', async ({ matchOnlyStrict }) => {
   const pinoLogLevels = pino.levels.values
-  match(DEFAULT_SEVERITY_NUMBER_MAP, {
+  matchOnlyStrict(DEFAULT_SEVERITY_NUMBER_MAP, {
     [pinoLogLevels.trace]: SeverityNumber.TRACE,
     [pinoLogLevels.debug]: SeverityNumber.DEBUG,
     [pinoLogLevels.info]: SeverityNumber.INFO,
@@ -18,7 +18,7 @@ test('default severity number map', async ({ match }) => {
   })
 })
 
-test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
+test('toOpenTelemetry maps all log levels correctly', async ({ matchOnlyStrict }) => {
   const testStart = Date.now()
   const testLogEntryBase = {
     msg: 'test message',
@@ -31,7 +31,7 @@ test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
   const testSpanId = '1234567890123456'
   const testTraceFlags = '01'
 
-  match(
+  matchOnlyStrict(
     toOpenTelemetry(
       {
         ...testLogEntryBase,
@@ -45,8 +45,9 @@ test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
     ),
     {
       severityNumber: 1,
-      severityText: 'TRACE',
+      severityText: 'trace',
       body: 'test message',
+      timestamp: testStart,
       attributes: {
         testAttribute: 'test',
         span_id: testSpanId,
@@ -56,7 +57,7 @@ test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
     }
   )
 
-  match(
+  matchOnlyStrict(
     toOpenTelemetry(
       {
         ...testLogEntryBase,
@@ -66,11 +67,13 @@ test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
     ),
     {
       severityNumber: 5,
-      severityText: 'DEBUG'
+      severityText: 'debug',
+      body: 'test message',
+      timestamp: testStart
     }
   )
 
-  match(
+  matchOnlyStrict(
     toOpenTelemetry(
       {
         ...testLogEntryBase,
@@ -80,11 +83,13 @@ test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
     ),
     {
       severityNumber: 9,
-      severityText: 'INFO'
+      severityText: 'info',
+      body: 'test message',
+      timestamp: testStart
     }
   )
 
-  match(
+  matchOnlyStrict(
     toOpenTelemetry(
       {
         ...testLogEntryBase,
@@ -94,11 +99,13 @@ test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
     ),
     {
       severityNumber: 13,
-      severityText: 'WARN'
+      severityText: 'warn',
+      body: 'test message',
+      timestamp: testStart
     }
   )
 
-  match(
+  matchOnlyStrict(
     toOpenTelemetry(
       {
         ...testLogEntryBase,
@@ -108,11 +115,13 @@ test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
     ),
     {
       severityNumber: 17,
-      severityText: 'ERROR'
+      severityText: 'error',
+      body: 'test message',
+      timestamp: testStart
     }
   )
 
-  match(
+  matchOnlyStrict(
     toOpenTelemetry(
       {
         ...testLogEntryBase,
@@ -127,11 +136,13 @@ test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
     ),
     {
       severityNumber: 21,
-      severityText: 'FATAL'
+      severityText: 'fatal',
+      body: 'test message',
+      timestamp: testStart
     }
   )
 
-  match(
+  matchOnlyStrict(
     toOpenTelemetry(
       {
         ...testLogEntryBase,
@@ -141,16 +152,21 @@ test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
         messageKey: 'msg',
         severityNumberMap: {
           35: 10
+        },
+        customLevelLabels: {
+          35: 'custom'
         }
       }
     ),
     {
       severityNumber: 10,
-      severityText: 'INFO2'
+      severityText: 'custom',
+      body: 'test message',
+      timestamp: testStart
     }
   )
 
-  match(
+  matchOnlyStrict(
     toOpenTelemetry(
       {
         ...testLogEntryBase,
@@ -160,12 +176,16 @@ test('toOpenTelemetry maps all log levels correctly', async ({ match }) => {
         messageKey: 'msg',
         severityNumberMap: {
           35: 10
+        },
+        customLevelLabels: {
+          35: 'custom'
         }
       }
     ),
     {
       severityNumber: 0,
-      severityText: 'UNSPECIFIED'
+      body: 'test message',
+      timestamp: testStart
     }
   )
 })

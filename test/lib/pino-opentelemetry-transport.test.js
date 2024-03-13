@@ -54,6 +54,13 @@ test('translate Pino log format to Open Telemetry data format for each log level
     }
   })
 
+  const pinoConfig = {
+    level: 'trace',
+    customLevels: {
+      custom: 35
+    }
+  }
+
   const transport = pino.transport({
     target: '../..',
     options: {
@@ -69,18 +76,14 @@ test('translate Pino log format to Open Telemetry data format for each log level
           protocol: 'grpc'
         }
       },
+      customLevels: pinoConfig.customLevels,
       severityNumberMap: {
         35: 10
       }
     }
   })
 
-  const logger = pino({
-    level: 'trace',
-    customLevels: {
-      custom: 35
-    }
-  }, transport)
+  const logger = pino(pinoConfig, transport)
 
   const testTraceId = '12345678901234567890123456789012'
   const testSpanId = '1234567890123456'
@@ -127,7 +130,7 @@ test('translate Pino log format to Open Telemetry data format for each log level
   const expectedLines = [
     {
       severityNumber: 1,
-      severityText: 'TRACE',
+      severityText: 'trace',
       body: { stringValue: 'test trace' },
       traceId: testTraceId,
       spanId: testSpanId,
@@ -138,42 +141,42 @@ test('translate Pino log format to Open Telemetry data format for each log level
     },
     {
       severityNumber: 5,
-      severityText: 'DEBUG',
+      severityText: 'debug',
       body: { stringValue: 'test debug' },
       traceId: '',
       spanId: ''
     },
     {
       severityNumber: 9,
-      severityText: 'INFO',
+      severityText: 'info',
       body: { stringValue: 'test info' },
       traceId: '',
       spanId: ''
     },
     {
       severityNumber: 10,
-      severityText: 'INFO2',
+      severityText: 'custom',
       body: { stringValue: 'test custom' },
       traceId: '',
       spanId: ''
     },
     {
       severityNumber: 13,
-      severityText: 'WARN',
+      severityText: 'warn',
       body: { stringValue: 'test warn' },
       traceId: '',
       spanId: ''
     },
     {
       severityNumber: 17,
-      severityText: 'ERROR',
+      severityText: 'error',
       body: { stringValue: 'test error' },
       traceId: '',
       spanId: ''
     },
     {
       severityNumber: 21,
-      severityText: 'FATAL',
+      severityText: 'fatal',
       body: { stringValue: 'test fatal' },
       traceId: '',
       spanId: ''

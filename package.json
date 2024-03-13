@@ -4,7 +4,7 @@
   "description": "OpenTelemetry transport for Pino",
   "main": "lib/pino-opentelemetry-transport.js",
   "scripts": {
-    "validate-and-test": "standard | snazzy && tap test/**/*.test.js --branches=45 --lines=45 --functions=45 --statements=45 --coverage-report=lcovonly && tsd",
+    "validate-and-test": "standard | snazzy && tap test/**/*.test.js --allow-incomplete-coverage --coverage-report=lcovonly --coverage-report=text && tsd",
     "test": "npm run validate-and-test",
     "docker-run": "docker compose up",
     "generate-types": "tsc",
@@ -16,29 +16,32 @@
   "repository": "github:Vunovati/pino-opentelemetry-transport",
   "license": "MIT",
   "dependencies": {
-    "otlp-logger": "^1.1.0",
+    "otlp-logger": "^1.1.2",
     "pino-abstract-transport": "^1.1.0"
+  },
+  "peerDependencies": {
+    "pino": "^8.0.0"
   },
   "types": "./types/pino-opentelemetry-transport.d.ts",
   "devDependencies": {
-    "@commitlint/cli": "^19.0.3",
-    "@commitlint/config-conventional": "^19.0.3",
-    "@fastify/pre-commit": "^2.0.2",
-    "@opentelemetry/api": "^1.4.1",
+    "@commitlint/cli": "^19.1.0",
+    "@commitlint/config-conventional": "^19.1.0",
+    "@fastify/pre-commit": "^2.1.0",
+    "@opentelemetry/api": "^1.8.0",
     "@opentelemetry/api-logs": "^0.49.1",
     "@opentelemetry/instrumentation-http": "^0.49.1",
     "@opentelemetry/instrumentation-pino": "^0.36.0",
     "@opentelemetry/sdk-node": "^0.49.1",
-    "@types/node": "^20.8.2",
-    "pino": "^8.15.1",
+    "@types/node": "^20.11.27",
+    "pino": "^8.19.0",
     "require-inject": "^1.4.4",
     "snazzy": "^9.0.0",
     "standard": "^17.1.0",
-    "tap": "^16.3.8",
-    "tar-stream": "^3.1.6",
-    "testcontainers": "^10.2.1",
-    "tsd": "^0.30.3",
-    "typescript": "^5.2.2"
+    "tap": "^18.7.1",
+    "tar-stream": "^3.1.7",
+    "testcontainers": "^10.7.2",
+    "tsd": "^0.30.7",
+    "typescript": "^5.4.2"
   },
   "standard": {
     "ignore": [
